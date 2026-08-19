@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="th" class="is-booting">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Beyond Passion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Titan+One&family=Mitr:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   BEYOND PASSION — design preview
+   Palette and type system taken from the campaign badge: acid
+   yellow-green field, aqua core, black bubble lettering under a
+   heavy white outline.
+   ============================================================ */
+
+:root{
+  --acid:#E3FF35;
+  --aqua:#A9EFE0;
+  --ink:#0B0B0C;
+  --paper:#FFFFFF;
+
+  --pad: clamp(1.25rem, 5vw, 5rem);
+  --badge: min(66vmin, 600px);
+
+  /* Latin display is the bubble face. Titan One carries no Thai
+     glyphs, so Thai falls through per-glyph to Mitr on its own —
+     the two are unified by treatment (outline, tracking, timing)
+     rather than by being one font. */
+  --display:'Titan One','Mitr',system-ui,sans-serif;
+  --thai:'Mitr',system-ui,sans-serif;
+  --body:'Mitr',system-ui,-apple-system,sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+html{-webkit-text-size-adjust:100%}
+
+/* Scroll lock for the opening. Applied to <html>, not <body>:
+   locking body with height:100vh collapses the document, and any
+   ScrollTrigger built against that collapsed layout computes
+   garbage offsets and fires scenes at the wrong time. */
+html.is-booting{overflow:hidden}
+
+body{
+  font-family:var(--body);
+  font-weight:300;
+  background:var(--ink);
+  color:var(--paper);
+  overflow-x:hidden;
+  width:100%;
+}
+
+img{display:block;max-width:100%}
+
+/* fixed colour plate — scenes tint this instead of each owning a
+   background, so the field can change without a hard cut */
+#plate{
+  position:fixed; inset:0; z-index:-2;
+  background:var(--ink);
+  will-change:background-color;
+}
+
+/* The acid disc that swallows the screen on the hand-off. Tweening
+   the plate from near-black to neon green interpolates through a
+   muddy olive; growing the badge's own circle instead keeps the
+   colour pure and lets the logo perform the transition itself. */
+#bloom{
+  position:fixed;
+  top:50%; left:50%;
+  width:var(--badge);
+  aspect-ratio:1;
+  border-radius:50%;
+  background:var(--acid);
+  z-index:-1;
+  opacity:0;
+  pointer-events:none;
+  will-change:transform;
+}
+
+.scene{
+  position:relative;
+  min-height:100svh;
+  padding:var(--pad);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  overflow:hidden;
+}
+
+/* ═══════════ 01 · STAGE (opening + manifesto, one pinned scene) ═══════════ */
+
+#stage{
+  position:relative;
+  height:100svh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.badge{
+  position:relative;
+  width:var(--badge);
+  aspect-ratio:1;
+  will-change:transform,filter,opacity;
+}
+
+/* The badge art is a JPG sitting on an opaque charcoal square, so it
+   must be cropped to its circle before it can live on any background.
+   These numbers are measured off the real file, not estimated:
+   natural 1467x1536, circle centre (729.5, 733), diameter 1415.5px.
+   For a square mask of side S (scale = S/1415.5):
+     width  = 1467/1415.5 = 103.638%
+     height = 1536/1415.5 = 108.513%
+     left   = -(729.5-707.75)/1415.5 = -1.537%
+     top    = -(733  -707.75)/1415.5 = -1.784%   */
+.badge__mask{
+  position:absolute; inset:0;
+  border-radius:50%;
+  overflow:hidden;
+  transform:translateZ(0);
+}
+.badge__mask img,
+.outro__mark img{
+  position:absolute;
+  max-width:none;           /* beats the global img{max-width:100%} */
+  width:103.638%;
+  height:108.513%;
+  left:-1.537%;
+  top:-1.784%;
+  transform:scale(1.015);   /* eats the JPEG fringe at the cut edge */
+}
+
+/* aqua-into-acid bloom behind the badge, echoing the logo's own core */
+.badge__glow{
+  position:absolute;
+  inset:-26%;
+  border-radius:50%;
+  background:radial-gradient(circle at 50% 50%,
+    rgba(169,239,224,.55) 0%,
+    rgba(227,255,53,.30) 38%,
+    rgba(227,255,53,0) 68%);
+  filter:blur(30px);
+  z-index:-1;
+  will-change:transform,opacity;
+}
+
+.cue{
+  position:absolute;
+  left:50%; bottom:clamp(1.25rem,3.5vh,2.5rem);
+  transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:.55rem;
+  opacity:0;
+  z-index:3;
+}
+.cue__label{
+  font-size:.66rem; letter-spacing:.34em; text-transform:uppercase;
+  font-weight:500; opacity:.8;
+}
+.cue__rail{
+  width:1px; height:40px;
+  background:linear-gradient(to bottom,rgba(255,255,255,.6),rgba(255,255,255,0));
+  position:relative; overflow:hidden;
+}
+.cue__rail::after{
+  content:''; position:absolute; left:0; top:-60%;
+  width:1px; height:60%;
+  background:var(--acid);
+  animation:railDrop 1.9s cubic-bezier(.16,1,.3,1) infinite;
+}
+@keyframes railDrop{ to{ transform:translateY(280%) } }
+
+/* the manifesto rises inside the same pinned stage, so the logo
+   hands straight over to the typography with no dead screen */
+.manifest{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; justify-content:center;
+  gap:clamp(1.25rem,4.5vh,2.75rem);
+  padding:var(--pad);
+  color:var(--ink);
+  opacity:0;
+  z-index:2;
+}
+
+.eyebrow{
+  font-weight:600;
+  font-size:clamp(.62rem,1.4vw,.78rem);
+  letter-spacing:.36em;
+  text-transform:uppercase;
+}
+
+.marquee{
+  width:100vw;
+  margin-left:calc(var(--pad) * -1);
+  overflow:hidden;
+}
+.marquee__track{
+  display:flex;
+  gap:clamp(1.25rem,3.5vw,3.5rem);
+  white-space:nowrap;
+  will-change:transform;
+}
+.marquee__word{
+  font-family:var(--display);
+  font-size:clamp(3rem,13.5vw,11.5rem);
+  line-height:.92;
+  color:var(--ink);
+}
+.marquee__word--hollow{
+  color:transparent;
+  -webkit-text-stroke:clamp(2px,.45vw,4px) var(--ink);
+}
+
+.lede{
+  max-width:34ch;
+  font-size:clamp(.92rem,2vw,1.15rem);
+  line-height:1.75;
+  font-weight:400;
+}
+
+/* ═══════════ 02 · POLICY SCENES ═══════════ */
+
+.policy{ justify-content:center; }
+
+.policy__num{
+  position:absolute;
+  top:50%; left:var(--pad);
+  transform:translateY(-50%);
+  font-family:var(--display);
+  font-size:clamp(11rem,40vw,28rem);
+  line-height:.8;
+  color:transparent;
+  -webkit-text-stroke:clamp(2px,.4vw,4px) currentColor;
+  opacity:.2;
+  pointer-events:none;
+  z-index:0;
+  will-change:transform;
+}
+
+.policy__body{ position:relative; z-index:1; }
+
+.policy__label{
+  font-weight:600;
+  font-size:clamp(.66rem,1.5vw,.8rem);
+  letter-spacing:.34em;
+  text-transform:uppercase;
+  margin-bottom:clamp(1rem,3vh,1.75rem);
+  display:block;
+}
+
+.policy__title{
+  font-family:var(--thai);
+  font-weight:700;
+  font-size:clamp(2rem,7.6vw,5.8rem);
+  line-height:1.38;      /* Thai stacks vowels and tone marks */
+  max-width:16ch;
+}
+.policy__title--latin{
+  font-family:var(--display);
+  font-weight:400;
+  line-height:1.02;
+  letter-spacing:-.015em;
+}
+
+/* --- scene themes --- */
+.t-ink{ color:var(--paper) }
+.t-ink .policy__label{ color:var(--acid) }
+.t-acid{ color:var(--ink) }
+.t-acid .policy__label{ color:var(--ink); opacity:.6 }
+.t-paper{ color:var(--ink) }
+.t-paper .policy__label{ color:var(--ink); opacity:.55 }
+
+/* --- reveal mechanics, one per scene --- */
+
+/* 01 · clip wipe */
+.wipe{ clip-path:inset(0 100% 0 0); will-change:clip-path }
+
+/* 02 · word stagger. Each word gets its OWN mask so the effect
+   survives line wrapping; the vertical padding keeps Thai tone
+   marks from being clipped, and the negative margin cancels it
+   out of the layout. */
+.umask{
+  display:inline-block;
+  overflow:hidden;
+  vertical-align:bottom;
+  padding:.24em 0 .18em;
+  margin:-.24em 0 -.18em;
+}
+.unit{ display:inline-block; will-change:transform }
+
+/* 03 · focus pull */
+.pull{ will-change:filter,transform,opacity }
+
+/* ═══════════ 03 · OUTRO ═══════════ */
+
+#outro{ align-items:center; justify-content:center; text-align:center; gap:1.4rem; color:var(--paper) }
+
+.outro__mark{
+  width:clamp(84px,15vmin,140px);
+  aspect-ratio:1;
+  border-radius:50%;
+  overflow:hidden;
+  position:relative;
+}
+.outro__note{
+  font-size:.75rem;
+  letter-spacing:.3em;
+  text-transform:uppercase;
+  font-weight:500;
+  opacity:.5;
+}
+
+/* ═══════════ responsive ═══════════ */
+
+@media (max-width:768px){
+  :root{ --badge: min(80vmin, 440px) }
+
+  .policy__num{
+    left:auto;
+    right:calc(var(--pad) * -.4);
+    top:auto;
+    bottom:5vh;
+    transform:none;
+    font-size:42vw;
+    opacity:.15;
+  }
+  .policy__title{ max-width:none; line-height:1.44 }
+  .lede{ max-width:none }
+  .marquee__word{ font-size:clamp(2.6rem,17vw,6rem) }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .cue__rail::after{ animation:none }
+}
+</style>
+</head>
+<body>
+
+<div id="plate"></div>
+<div id="bloom"></div>
+
+<!-- ══ 01 · STAGE — opening title handing over to the manifesto ══ -->
+<section id="stage">
+  <div class="badge" id="badge">
+    <div class="badge__glow" id="glow"></div>
+    <div class="badge__mask"><img src="assets/logo.jpg" alt="Beyond Passion"></div>
+  </div>
+
+  <div class="cue" id="cue">
+    <span class="cue__label">Scroll</span>
+    <span class="cue__rail"></span>
+  </div>
+
+  <div class="manifest" id="manifest">
+    <span class="eyebrow">Presentation</span>
+    <div class="marquee">
+      <div class="marquee__track" id="track">
+        <span class="marquee__word">BEYOND PASSION</span>
+        <span class="marquee__word marquee__word--hollow">BEYOND PASSION</span>
+        <span class="marquee__word">BEYOND PASSION</span>
+        <span class="marquee__word marquee__word--hollow">BEYOND PASSION</span>
+      </div>
+    </div>
+    <p class="lede">ตัวอย่างงานออกแบบ — เนื้อหาจริงจะถูกเพิ่มภายหลัง</p>
+  </div>
+</section>
+
+<!-- ══ 02 · POLICY 01 — clip wipe ══ -->
+<section class="scene policy t-ink" data-plate="ink" data-reveal="wipe">
+  <span class="policy__num" data-num>01</span>
+  <div class="policy__body">
+    <span class="policy__label">นโยบาย 01</span>
+    <h2 class="policy__title wipe">นโยบายของเราจะอยู่ตรงนี้</h2>
+  </div>
+</section>
+
+<!-- ══ 03 · POLICY 02 — word stagger ══ -->
+<section class="scene policy t-paper" data-plate="paper" data-reveal="stagger">
+  <span class="policy__num" data-num>02</span>
+  <div class="policy__body">
+    <span class="policy__label">นโยบาย 02</span>
+    <h2 class="policy__title" data-split>รายละเอียดนโยบายจะถูกเพิ่มภายหลัง</h2>
+  </div>
+</section>
+
+<!-- ══ 04 · POLICY 03 — focus pull ══ -->
+<section class="scene policy t-acid" data-plate="acid" data-reveal="pull">
+  <span class="policy__num" data-num>03</span>
+  <div class="policy__body">
+    <span class="policy__label">นโยบาย 03</span>
+    <h2 class="policy__title policy__title--latin pull">Beyond<br>Passion</h2>
+  </div>
+</section>
+
+<!-- ══ 05 · OUTRO ══ -->
+<section class="scene" id="outro" data-plate="ink">
+  <div class="outro__mark"><img src="assets/logo.jpg" alt=""></div>
+  <span class="outro__note">Design preview</span>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  var PLATE = { ink:'#0B0B0C', acid:'#E3FF35', paper:'#FFFFFF' };
+
+  var root     = document.documentElement;
+  var plate    = document.getElementById('plate');
+  var bloom    = document.getElementById('bloom');
+  var badge    = document.getElementById('badge');
+  var glow     = document.getElementById('glow');
+  var cue      = document.getElementById('cue');
+  var manifest = document.getElementById('manifest');
+
+  var reduced  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+  /* ----------------------------------------------------------------
+     Thai can't be split per character: vowels and tone marks are
+     separate code points that render above/below the base consonant,
+     so per-char inline-blocks shatter the word. Thai also has no
+     spaces, which makes split(' ') useless. Intl.Segmenter gives
+     real Thai word boundaries.
+     ---------------------------------------------------------------- */
+  function segment(text, lang){
+    if (window.Intl && Intl.Segmenter){
+      try{
+        var seg = new Intl.Segmenter(lang, { granularity:'word' });
+        var out = [];
+        var it  = seg.segment(text)[Symbol.iterator]();
+        for (var s = it.next(); !s.done; s = it.next()) out.push(s.value.segment);
+        if (out.length) return out;
+      }catch(e){ /* fall through to the whole string */ }
+    }
+    return [text];
+  }
+
+  function buildSplit(el){
+    var words = segment(el.textContent.trim(), 'th');
+    el.textContent = '';
+    words.forEach(function(w){
+      var mask = document.createElement('span');
+      mask.className = 'umask';
+      var unit = document.createElement('span');
+      unit.className = 'unit';
+      unit.textContent = w;
+      mask.appendChild(unit);
+      el.appendChild(mask);
+    });
+    return el.querySelectorAll('.unit');
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* An opening only reads as an opening from the top; Chrome restores
+     scroll across reloads and would drop a returning visitor into the
+     middle of the pinned stage. */
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
+
+  /* ---------------- reduced motion: state, no motion ---------------- */
+  if (reduced){
+    root.classList.remove('is-booting');
+    gsap.set('.wipe', { clipPath:'inset(0 0% 0 0)' });
+    gsap.set([cue, manifest], { opacity:1 });
+    gsap.set(badge, { display:'none' });
+    plate.style.backgroundColor = PLATE.acid;
+    wireTints();
+    return;
+  }
+
+  /* ═══════════ 01 · OPENING TITLE ═══════════
+     Scroll stays locked until this resolves, so the badge always gets
+     its full entrance and the cue never appears early. */
+
+  gsap.set(badge, { opacity:0, scale:1.22, filter:'blur(26px)' });
+  gsap.set(glow,  { opacity:0, scale:.62 });
+
+  gsap.timeline({
+      onComplete: function(){
+        root.classList.remove('is-booting');
+        initScroll();
+        ScrollTrigger.refresh();
+      }
+    })
+    .to(badge, { opacity:1, scale:1, filter:'blur(0px)', duration:2.1, ease:'power2.out' })
+    .to(glow,  { opacity:1, scale:1, duration:2.4, ease:'power2.out' }, .15)
+    .to(cue,   { opacity:1, duration:.8, ease:'power2.out' }, '-=0.35');
+
+  /* ─────────────────────────────────────────────────────────────
+     EVERY ScrollTrigger is created in here, and only once the
+     opening has resolved. Two reasons, both found the hard way:
+
+     1. A scrubbed .to() records its start values when the timeline
+        is CREATED. Built up front, progress-0 kept snapping the
+        badge back to its hidden pre-entrance state, fighting the
+        opening animation.
+     2. During boot the document is scroll-locked; triggers built
+        against a not-yet-final layout compute wrong offsets and
+        fire scenes early (the plate tinted acid at scroll 0).
+     ───────────────────────────────────────────────────────────── */
+  function initScroll(){
+
+    gsap.set(bloom, { xPercent:-50, yPercent:-50 });
+
+    /* scale needed for the disc to clear the viewport corners */
+    function coverScale(){
+      var d = bloom.offsetWidth || 1;
+      return (Math.sqrt(innerWidth*innerWidth + innerHeight*innerHeight) / d) * 1.08;
+    }
+
+    /* ══ title → manifesto, all inside one pinned stage ══
+       The badge pushes past the camera and defocuses while its own
+       disc grows past the corners, so the acid field is revealed by
+       the logo rather than cross-faded to. Once the disc covers
+       everything the plate is swapped underneath it — invisible,
+       because the screen is solid acid at that instant — and the
+       manifesto rises into the space the logo just left. */
+
+    var stage = gsap.timeline({
+      scrollTrigger:{
+        trigger:'#stage',
+        start:'top top',
+        end:'+=185%',
+        pin:true,
+        scrub:.8,
+        anticipatePin:1,
+        invalidateOnRefresh:true      // recompute coverScale() on resize
+      }
+    });
+
+    stage
+      .to(badge, {
+        scale: isMobile ? 2.6 : 3.0,
+        filter:'blur(20px)',
+        opacity:0,
+        duration:.5, ease:'power2.in'
+      }, 0)
+      .fromTo(bloom,
+        { scale:.98, opacity:1 },
+        { scale:coverScale, duration:.5, ease:'power2.in' }, 0)
+      .to(glow, { opacity:0, duration:.42, ease:'power1.in' }, 0)
+      .to(cue,  { opacity:0, duration:.08, ease:'none' }, 0)
+      /* screen is solid acid here — swap plate, drop the disc */
+      .set(plate, { backgroundColor: PLATE.acid }, .48)
+      .set(bloom, { opacity:0 }, .48)
+      .fromTo(manifest,
+        { opacity:0, y:48 },
+        { opacity:1, y:0, duration:.26, ease:'power3.out' }, .5)
+      /* vertical scroll drives horizontal type — used once, here */
+      .fromTo('#track',
+        { xPercent:0 },
+        { xPercent: isMobile ? -40 : -28, duration:.5, ease:'none' }, .5);
+
+    wireTints();
+
+    /* ══ policy scenes — a wipe, a stagger, a focus pull. Three
+         different mechanics so the scenes don't read as one loop. ══ */
+
+    document.querySelectorAll('.policy').forEach(function(sec){
+      var kind = sec.dataset.reveal;
+      var num  = sec.querySelector('[data-num]');
+
+      var tl = gsap.timeline({ scrollTrigger:{ trigger:sec, start:'top 62%' } });
+
+      tl.from(sec.querySelector('.policy__label'), {
+        y:14, opacity:0, duration:.7, ease:'power3.out'
+      });
+
+      if (kind === 'wipe'){
+        tl.fromTo(sec.querySelector('.wipe'),
+          { clipPath:'inset(0 100% 0 0)' },
+          { clipPath:'inset(0 0% 0 0)', duration:1.25, ease:'power4.inOut' }, '-=0.35');
+      }
+
+      if (kind === 'stagger'){
+        tl.from(buildSplit(sec.querySelector('[data-split]')), {
+          yPercent:118, duration:1, ease:'power4.out', stagger:.055
+        }, '-=0.4');
+      }
+
+      if (kind === 'pull'){
+        tl.from(sec.querySelector('.pull'), {
+          filter:'blur(20px)', opacity:0, scale:1.07,
+          duration:1.35, ease:'power3.out'
+        }, '-=0.4');
+      }
+
+      /* the oversized numeral drifts against the scroll — parallax
+         depth that keeps the scene reading as a stage, not a card */
+      if (num){
+        gsap.to(num, {
+          yPercent: isMobile ? 0 : -14,
+          xPercent: isMobile ? -5 : 5,
+          ease:'none',
+          scrollTrigger:{ trigger:sec, start:'top bottom', end:'bottom top', scrub:.7 }
+        });
+      }
+    });
+
+    /* ══ outro ══ */
+    gsap.from('#outro .outro__mark', {
+      scale:.82, opacity:0, duration:1.1, ease:'power3.out',
+      scrollTrigger:{ trigger:'#outro', start:'top 70%' }
+    });
+    gsap.from('#outro .outro__note', {
+      opacity:0, y:12, duration:.9, ease:'power3.out',
+      scrollTrigger:{ trigger:'#outro', start:'top 70%' }
+    });
+  }
+
+  /* Plate tinting. Each scene claims the field as it arrives; leaving
+     one upwards restores the previous scene's colour so scrubbing
+     backwards is symmetrical. */
+  function wireTints(){
+    var secs = [].slice.call(document.querySelectorAll('[data-plate]'));
+
+    function tintTo(c){
+      if (reduced){ plate.style.backgroundColor = c; return; }
+      gsap.to(plate, { backgroundColor:c, duration:.7, ease:'power2.inOut', overwrite:'auto' });
+    }
+
+    secs.forEach(function(sec, i){
+      ScrollTrigger.create({
+        trigger: sec,
+        start:'top 55%',
+        end:'bottom 45%',
+        onEnter:     function(){ tintTo(PLATE[sec.dataset.plate]); },
+        onEnterBack: function(){ tintTo(PLATE[sec.dataset.plate]); },
+        onLeaveBack: function(){
+          tintTo(i > 0 ? PLATE[secs[i-1].dataset.plate] : PLATE.acid);
+        }
+      });
+    });
+  }
+
+  /* Late webfont and image loads change layout under the pinned scene. */
+  window.addEventListener('load', function(){ ScrollTrigger.refresh(); });
+  if (document.fonts && document.fonts.ready){
+    document.fonts.ready.then(function(){ ScrollTrigger.refresh(); });
+  }
+  window.addEventListener('resize', function(){
+    isMobile = window.matchMedia('(max-width: 768px)').matches;
+  });
+})();
+</script>
+</body>
+</html>

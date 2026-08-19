@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="th" class="is-booting">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Beyond Passion — นโยบาย</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Titan+One&family=Mitr:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* =============================================================
+   BEYOND PASSION — campaign presentation
+   Art direction read off the campaign's own CANDIDATE poster:
+   blue CMYK halftone on paper, torn-paper layers, and stacked
+   two-colour sticker type at opposing rotations.
+   ============================================================= */
+
+:root{
+  --acid:#E3FF35;
+  --grass:#7BDF3F;
+  --cyan:#5CC9E8;
+  --blue:#2C6FD6;
+  --paper:#F2EFE4;
+  --ink:#0B0B0C;
+  --orange:#FF9A1F;
+  --magenta:#FF3EA5;
+
+  --pad: clamp(1.15rem, 4.5vw, 5rem);
+  --badge: min(66vmin, 600px);
+
+  /* Titan One carries no Thai glyphs, so Thai falls through
+     per-glyph to Mitr on its own. The two scripts are unified by
+     treatment — outline, offset shadow, rotation — not by font. */
+  --display:'Titan One','Mitr',system-ui,sans-serif;
+  --thai:'Mitr',system-ui,sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;overflow-x:hidden}
+
+/* Scroll lock for the opening. On <html>, never body{height:100vh} —
+   that collapses the document and corrupts ScrollTrigger offsets. */
+html.is-booting{overflow:hidden}
+
+body{
+  font-family:var(--thai);
+  font-weight:300;
+  background:var(--ink);
+  color:var(--ink);
+  overflow-x:hidden;
+  width:100%;
+}
+img{display:block;max-width:100%}
+
+/* SVG filter defs live here, out of flow */
+.defs{position:absolute;width:0;height:0;overflow:hidden}
+
+/* ---------- shared texture primitives ---------- */
+
+/* blue CMYK halftone field */
+.halftone{
+  background-image:radial-gradient(var(--dot,var(--blue)) 32%, transparent 33%);
+  background-size:var(--dots,23px) var(--dots,23px);
+}
+
+/* A torn paper band in the scene's own colour, overlapping the scene
+   above it — this is what separates scenes instead of a fade.
+   The ragged edge is a static clip-path, NOT an SVG feTurbulence
+   filter: eight ~1700px-wide turbulence filters recomputing on every
+   repaint froze the renderer outright. clip-path is pure compositing. */
+.tear{
+  position:absolute;
+  left:0; width:100%;
+  height:78px;
+  background:var(--bg,var(--paper));
+  pointer-events:none;
+  z-index:2;
+  clip-path:polygon(0.0% 26.9%, 2.75% 27.2%, 4.82% 20.4%, 6.98% 44.2%, 8.06% 35.4%, 9.05% 39.6%, 11.26% 40.2%, 13.21% 17.4%, 14.6% 16.7%, 16.38% 36.2%, 18.56% 28.0%, 20.37% 22.7%, 23.26% 36.2%, 24.79% 21.5%, 25.84% 34.4%, 28.43% 25.3%, 31.02% 16.0%, 33.74% 27.3%, 35.44% 17.8%, 37.9% 44.7%, 40.72% 43.4%, 41.83% 17.4%, 43.08% 29.4%, 44.36% 49.0%, 45.5% 26.1%, 46.94% 39.3%, 48.44% 37.2%, 50.13% 36.5%, 51.23% 39.7%, 52.65% 34.5%, 54.14% 48.2%, 55.53% 30.4%, 57.33% 39.0%, 59.38% 36.8%, 60.59% 37.8%, 61.99% 20.6%, 64.77% 20.7%, 67.44% 30.5%, 68.54% 16.9%, 69.92% 32.9%, 72.47% 30.3%, 73.72% 43.2%, 75.74% 36.5%, 77.2% 38.0%, 78.13% 22.5%, 79.15% 20.2%, 81.2% 19.2%, 83.88% 39.5%, 86.16% 40.5%, 87.1% 37.8%, 89.92% 16.5%, 91.79% 33.5%, 94.68% 17.8%, 97.06% 37.6%, 99.37% 35.0%, 100.0% 32.4%, 100% 100%, 0% 100%);
+}
+.tear--top{ top:-38px; }
+
+/* sticker lettering: a thick outline layer sitting behind the fill,
+   plus a hard offset shadow. Two layers rather than text-stroke
+   alone, which would eat into the glyph. */
+.stk{
+  position:relative;
+  font-family:var(--display);
+  font-weight:400;
+  line-height:.94;
+  display:inline-block;
+  text-shadow:var(--sx,7px) var(--sy,7px) 0 var(--shadow,var(--ink));
+}
+.stk::before{
+  content:attr(data-text);
+  position:absolute;
+  left:0; top:0;
+  -webkit-text-stroke:var(--stroke,9px) var(--outline,var(--ink));
+  color:transparent;
+  z-index:-1;
+  pointer-events:none;
+}
+
+.tape{
+  position:absolute;
+  width:clamp(64px,9vw,120px);
+  height:clamp(24px,3.2vw,38px);
+  background:rgba(255,255,255,.55);
+  border-left:1px solid rgba(0,0,0,.10);
+  border-right:1px solid rgba(0,0,0,.10);
+  box-shadow:0 1px 4px rgba(0,0,0,.14);
+  pointer-events:none;
+}
+
+/* ═══════════ 01 · STAGE — opening title ═══════════ */
+
+#plate{ position:fixed; inset:0; z-index:-3; background:var(--ink); will-change:background-color; }
+
+/* The acid disc that swallows the screen on the hand-off. Tweening
+   the plate near-black → neon interpolates through a muddy olive;
+   growing the badge's own circle keeps the colour pure and lets the
+   logo perform the transition itself. */
+#bloom{
+  position:fixed; top:50%; left:50%;
+  width:var(--badge); aspect-ratio:1;
+  border-radius:50%;
+  background:var(--acid);
+  z-index:-2; opacity:0;
+  pointer-events:none; will-change:transform;
+}
+
+#stage{
+  position:relative;
+  height:100svh;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+}
+
+/* The cover belongs to the same collage world as every other scene:
+   a blue halftone field torn open top and bottom, with the badge
+   showing through the gap — rather than a clean neon-on-black hero
+   that would read as a different website. */
+.stage__dots{
+  position:absolute; inset:0;
+  --dot:#2E63C8; --dots:23px;
+  opacity:.40;
+  z-index:0; pointer-events:none;
+}
+.frame{
+  position:absolute; left:0; width:100%;
+  height:clamp(40px,7vh,84px);
+  background:var(--paper);
+  z-index:4; pointer-events:none;
+}
+.frame--top{
+  top:0;
+  clip-path:polygon(0% 0%, 100% 0%, 100.0% 70.1%, 98.97% 63.2%, 97.89% 64.1%, 95.89% 77.6%, 94.15% 66.2%, 91.33% 66.4%, 89.79% 72.5%, 87.54% 69.9%, 84.91% 60.1%, 82.22% 70.6%, 80.2% 74.5%, 78.34% 60.0%, 76.6% 62.2%, 74.34% 78.8%, 73.15% 67.1%, 72.24% 68.8%, 70.4% 63.6%, 68.42% 89.9%, 67.02% 71.4%, 65.46% 90.8%, 63.46% 76.5%, 61.74% 63.7%, 59.56% 74.6%, 57.83% 79.5%, 55.31% 66.2%, 53.52% 68.1%, 52.11% 71.0%, 50.87% 60.5%, 49.54% 80.4%, 48.25% 59.8%, 46.96% 81.4%, 45.37% 81.7%, 43.39% 77.3%, 40.54% 77.4%, 39.6% 87.8%, 38.36% 72.2%, 35.62% 63.7%, 33.07% 76.8%, 31.95% 71.2%, 29.5% 64.9%, 27.86% 77.7%, 25.81% 85.9%, 24.68% 77.6%, 23.14% 62.4%, 20.95% 72.2%, 18.62% 60.1%, 17.09% 71.7%, 15.45% 66.7%, 12.61% 73.8%, 10.53% 59.4%, 8.91% 70.3%, 7.17% 60.1%, 6.22% 63.3%, 4.43% 84.7%, 2.68% 60.0%, 0.0% 80.2%);
+}
+.frame--bottom{
+  bottom:0;
+  clip-path:polygon(0.0% 26.9%, 2.75% 27.2%, 4.82% 20.4%, 6.98% 44.2%, 8.06% 35.4%, 9.05% 39.6%, 11.26% 40.2%, 13.21% 17.4%, 14.6% 16.7%, 16.38% 36.2%, 18.56% 28.0%, 20.37% 22.7%, 23.26% 36.2%, 24.79% 21.5%, 25.84% 34.4%, 28.43% 25.3%, 31.02% 16.0%, 33.74% 27.3%, 35.44% 17.8%, 37.9% 44.7%, 40.72% 43.4%, 41.83% 17.4%, 43.08% 29.4%, 44.36% 49.0%, 45.5% 26.1%, 46.94% 39.3%, 48.44% 37.2%, 50.13% 36.5%, 51.23% 39.7%, 52.65% 34.5%, 54.14% 48.2%, 55.53% 30.4%, 57.33% 39.0%, 59.38% 36.8%, 60.59% 37.8%, 61.99% 20.6%, 64.77% 20.7%, 67.44% 30.5%, 68.54% 16.9%, 69.92% 32.9%, 72.47% 30.3%, 73.72% 43.2%, 75.74% 36.5%, 77.2% 38.0%, 78.13% 22.5%, 79.15% 20.2%, 81.2% 19.2%, 83.88% 39.5%, 86.16% 40.5%, 87.1% 37.8%, 89.92% 16.5%, 91.79% 33.5%, 94.68% 17.8%, 97.06% 37.6%, 99.37% 35.0%, 100.0% 32.4%, 100% 100%, 0% 100%);
+}
+
+.badge{ position:relative; width:var(--badge); aspect-ratio:1; will-change:transform,filter,opacity; }
+
+/* The badge art is a JPG on an opaque charcoal square, so it has to be
+   cropped to its circle to live on any background. Measured off the
+   real file, not estimated: natural 1467x1536, circle centre
+   (729.5,733), diameter 1415.5px → for a square mask of side S,
+   scale = S/1415.5. */
+.badge__mask{ position:absolute; inset:0; border-radius:50%; overflow:hidden; transform:translateZ(0); }
+.badge__mask img,
+.mark img{
+  position:absolute;
+  max-width:none;            /* beats the global img{max-width:100%} */
+  width:103.638%;
+  height:108.513%;
+  left:-1.537%;
+  top:-1.784%;
+  transform:scale(1.015);    /* eats the JPEG fringe at the cut edge */
+}
+
+.badge__glow{
+  position:absolute; inset:-26%;
+  border-radius:50%;
+  background:radial-gradient(circle at 50% 50%,
+    rgba(169,239,224,.55) 0%, rgba(227,255,53,.30) 38%, rgba(227,255,53,0) 68%);
+  filter:blur(30px);
+  z-index:-1;
+  will-change:transform,opacity;
+}
+
+.cue{
+  position:absolute; left:50%; bottom:clamp(1.1rem,3.2vh,2.4rem);
+  transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:.5rem;
+  opacity:0; z-index:5; color:#fff;
+}
+.cue__label{ font-size:.64rem; letter-spacing:.34em; text-transform:uppercase; font-weight:500; opacity:.8 }
+.cue__rail{ width:1px; height:38px; background:linear-gradient(to bottom,rgba(255,255,255,.6),transparent); position:relative; overflow:hidden }
+.cue__rail::after{
+  content:''; position:absolute; left:0; top:-60%; width:1px; height:60%;
+  background:var(--acid); animation:railDrop 1.9s cubic-bezier(.16,1,.3,1) infinite;
+}
+@keyframes railDrop{ to{ transform:translateY(280%) } }
+
+/* ═══════════ 02 · HERO COLLAGE (rises inside the stage) ═══════════ */
+
+.hero{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; justify-content:center;
+  padding:var(--pad);
+  opacity:0; z-index:3;
+}
+.hero__sheet{
+  position:absolute; inset:0;
+  background:var(--paper);
+  z-index:-1;
+}
+.hero__dots{
+  position:absolute; inset:0;
+  --dots:18px; opacity:.5;
+  z-index:-1;
+}
+/* No letter-spacing here: this label is Thai, and tracking Thai apart
+   the way you would a Latin eyebrow detaches vowels and tone marks
+   from their base consonants and reads as broken type. */
+.hero__kicker{
+  font-weight:600; font-size:clamp(.82rem,1.9vw,1.05rem);
+  color:var(--blue);
+  background:#fff;
+  display:inline-block; align-self:flex-start;
+  padding:.32em .7em;
+  rotate:-1.5deg;
+  box-shadow:4px 4px 0 rgba(0,0,0,.85);
+  margin-bottom:clamp(.8rem,2.2vh,1.4rem);
+}
+.hero__title{ display:flex; flex-direction:column; align-items:flex-start; }
+.hero__l1{
+  font-size:clamp(2.7rem,11vw,9rem);
+  color:var(--acid);
+  --stroke:clamp(4px,.7vw,9px);
+  rotate:-2.5deg;
+}
+.hero__l2{
+  font-size:clamp(2.2rem,8.6vw,7rem);
+  color:var(--grass);
+  --stroke:clamp(4px,.7vw,9px);
+  rotate:2.5deg;
+  margin-top:-.06em; margin-left:.12em;
+}
+.hero__lede{
+  margin-top:clamp(1.1rem,3.5vh,2rem);
+  max-width:38ch;
+  font-size:clamp(.92rem,2vw,1.12rem);
+  line-height:1.8; font-weight:400; color:var(--ink);
+}
+.hero__burst{
+  position:absolute; right:clamp(-40px,-2vw,0px); top:14%;
+  width:clamp(120px,20vw,260px); aspect-ratio:1;
+  background:repeating-conic-gradient(var(--orange) 0 9deg, transparent 9deg 18deg);
+  border-radius:50%;
+  opacity:.85; z-index:-1;
+}
+
+/* ═══════════ 03 · POLICY SCENES ═══════════ */
+
+.scene{
+  position:relative;
+  min-height:100svh;
+  padding:calc(var(--pad) * 1.6) var(--pad);
+  display:flex; flex-direction:column; justify-content:center;
+  background:var(--bg);
+  /* `clip` + a clip-margin, not `hidden`: the torn band is positioned
+     to overlap the scene above, and plain overflow:hidden sliced that
+     overlap off, flattening every tear into a straight line. */
+  overflow:clip;
+  overflow-clip-margin:90px;
+}
+.scene__dots{
+  position:absolute; inset:0;
+  opacity:var(--dotop,.38);
+  pointer-events:none; z-index:0;
+}
+.scene__body{ position:relative; z-index:3; max-width:min(100%,1100px) }
+
+.ptitle{ display:flex; flex-direction:column; align-items:flex-start; margin-bottom:clamp(1.1rem,3.5vh,2.2rem) }
+.ptitle__kicker{
+  font-size:clamp(1rem,3vw,2.3rem);
+  color:var(--cyan);
+  --stroke:clamp(3px,.45vw,6px);
+  --sx:4px; --sy:4px;
+  rotate:-3.5deg;
+  margin-left:.15em;
+}
+.ptitle__word{
+  font-size:clamp(2.9rem,12vw,9rem);
+  color:var(--acid);
+  --stroke:clamp(4px,.72vw,10px);
+  rotate:1.8deg;
+  margin-top:-.08em;
+}
+
+/* the copy sits on a pasted paper slip rather than floating on the
+   field — this is what stops each scene reading as a plain web layout */
+.pbody{
+  position:relative;
+  font-size:clamp(.95rem,2vw,1.24rem);
+  line-height:1.8; font-weight:400;
+  max-width:46ch;
+  color:var(--ink);
+  background:#fff;
+  padding:clamp(1rem,2vw,1.5rem) clamp(1.1rem,2.2vw,1.7rem);
+  box-shadow:9px 9px 0 rgba(0,0,0,.85);
+  rotate:-.9deg;
+  align-self:flex-start;
+}
+.pbody::before{                      /* tape across the top-left corner */
+  content:'';
+  position:absolute;
+  top:-11px; left:clamp(18px,4vw,46px);
+  width:clamp(58px,8vw,104px); height:22px;
+  background:rgba(255,255,255,.62);
+  border-left:1px solid rgba(0,0,0,.10);
+  border-right:1px solid rgba(0,0,0,.10);
+  box-shadow:0 1px 4px rgba(0,0,0,.16);
+  rotate:-6deg;
+}
+
+/* --- scene themes --- */
+.s-paper{ --bg:var(--paper); --txt:var(--ink); --dot:var(--blue); --dotop:.5 }
+.s-ink{   --bg:var(--ink);   --txt:#F3F3EE; --dot:#2E63C8; --dotop:.42 }
+.s-acid{  --bg:var(--acid);  --txt:var(--ink); --dot:#1F58BE; --dotop:.34 }
+
+.s-ink .ptitle__kicker{ color:var(--cyan); --outline:#000; --shadow:#000 }
+.s-acid .ptitle__word{ color:#fff; --outline:var(--ink); --shadow:var(--ink) }
+.s-acid .ptitle__kicker{ color:var(--blue) }
+
+/* --- reveal mechanics --- */
+.tearmask{ clip-path:inset(0 0 100% 0) }          /* 02 */
+.umask{ display:inline-block; overflow:hidden; vertical-align:bottom; padding:.26em 0 .2em; margin:-.26em 0 -.2em }
+.unit{ display:inline-block; will-change:transform }
+
+/* --- 04 · QR placeholder (graphic only, never a real code) --- */
+.qr{
+  position:relative;
+  width:clamp(120px,17vw,190px); aspect-ratio:1;
+  background:#fff; padding:9px;
+  display:grid; grid-template-columns:repeat(11,1fr); grid-auto-rows:1fr; gap:2px;
+  rotate:-4deg;
+  box-shadow:9px 9px 0 rgba(0,0,0,.85);
+  flex:none;
+}
+.qr i{ background:var(--ink); border-radius:1px }
+.qr__cap{
+  position:absolute; left:50%; bottom:-2.1rem; transform:translateX(-50%);
+  font-size:.6rem; letter-spacing:.24em; text-transform:uppercase;
+  font-weight:600; color:var(--txt); white-space:nowrap; opacity:.65;
+}
+.row-split{ display:flex; gap:clamp(1.5rem,5vw,4rem); align-items:flex-start; flex-wrap:wrap }
+
+/* --- 06 · taped notes --- */
+.notes{
+  display:grid; gap:clamp(1rem,2.4vw,1.8rem);
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  margin-top:clamp(1.4rem,4vh,2.4rem);
+}
+.note{
+  position:relative;
+  background:var(--paper);
+  color:var(--ink);
+  padding:clamp(1.3rem,2.6vw,1.9rem) clamp(1.1rem,2.2vw,1.5rem) clamp(1.1rem,2.2vw,1.5rem);
+  box-shadow:7px 7px 0 rgba(0,0,0,.85);
+  will-change:transform,opacity;
+}
+.note:nth-child(1){ rotate:-1.4deg }
+.note:nth-child(2){ rotate:.9deg }
+.note:nth-child(3){ rotate:-.6deg }
+.note__tape{ top:-13px; left:50%; margin-left:-clamp(32px,4.5vw,60px) }
+.note__h{
+  font-family:var(--display); font-weight:400;
+  font-size:clamp(1rem,1.9vw,1.32rem);
+  margin-bottom:.6rem; color:var(--ink);
+  background:linear-gradient(transparent 62%, var(--acid) 62%);
+  display:inline;
+}
+.note__p{ font-size:clamp(.86rem,1.55vw,.98rem); line-height:1.8; margin-top:.7rem }
+
+/* --- 07 · waveform + broadcast marquee --- */
+.wave{ display:flex; align-items:flex-end; gap:clamp(4px,.8vw,9px); height:clamp(52px,9vh,104px); margin-top:clamp(1.2rem,3.5vh,2rem) }
+.wave i{ flex:1; max-width:16px; background:var(--ink); transform-origin:bottom; height:100% }
+.s-ink .wave i{ background:var(--acid) }
+
+.bcast{ margin-inline:calc(var(--pad) * -1); overflow:hidden; margin-top:clamp(1.1rem,3vh,1.8rem) }
+.bcast__track{ display:flex; gap:clamp(1rem,3vw,2.6rem); white-space:nowrap; will-change:transform }
+.bcast__w{
+  font-family:var(--display);
+  font-size:clamp(1.9rem,6.4vw,5rem);
+  color:transparent;
+  -webkit-text-stroke:clamp(2px,.4vw,4px) var(--txt);
+}
+.bcast__w--solid{ color:var(--txt); -webkit-text-stroke:0 }
+
+/* --- scribble accent, used twice only --- */
+.scribble{ position:absolute; pointer-events:none; z-index:1; opacity:.9 }
+
+/* ═══════════ nav ═══════════ */
+.dex{
+  position:fixed; right:clamp(.5rem,1.4vw,1.4rem); top:50%; translate:0 -50%;
+  display:flex; flex-direction:column; gap:.5rem;
+  z-index:40; opacity:0; pointer-events:none;
+}
+.dex a{
+  font-size:.6rem; font-weight:600; letter-spacing:.1em;
+  text-decoration:none; color:var(--ink);
+  background:rgba(255,255,255,.72);
+  width:26px; height:22px; display:grid; place-items:center;
+  transition:background .25s, color .25s, transform .25s;
+}
+.dex a.on{ background:var(--ink); color:var(--acid); transform:scale(1.14) }
+
+/* ═══════════ outro ═══════════ */
+#outro{ align-items:center; text-align:center; gap:1.2rem; --bg:var(--ink); --txt:#fff }
+.mark{ width:clamp(88px,15vmin,140px); aspect-ratio:1; border-radius:50%; overflow:hidden; position:relative }
+.outro__note{ font-size:.72rem; letter-spacing:.3em; text-transform:uppercase; font-weight:600; color:#fff; opacity:.55; margin-top:1rem }
+
+/* ═══════════ responsive ═══════════ */
+@media (max-width:768px){
+  :root{ --badge:min(80vmin,440px) }
+  .stk{ --sx:4px; --sy:4px }
+  .hero__burst{ width:150px; top:9%; right:-46px }
+  .pbody,.hero__lede{ max-width:none }
+  .qr{ rotate:-3deg }
+  .dex{ display:none }        /* index is desktop-only; too cramped otherwise */
+  .scene{ padding-top:calc(var(--pad) * 2.2); padding-bottom:calc(var(--pad) * 2.6) }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .cue__rail::after{ animation:none }
+}
+</style>
+</head>
+<body>
+
+<div id="plate"></div>
+<div id="bloom"></div>
+
+<nav class="dex" id="dex" aria-label="ดัชนีนโยบาย"></nav>
+
+<!-- ══ STAGE — opening title handing over to the campaign world ══ -->
+<section id="stage">
+  <div class="stage__dots halftone covdeco"></div>
+  <div class="frame frame--top covdeco"></div>
+  <div class="frame frame--bottom covdeco"></div>
+
+  <div class="badge" id="badge">
+    <div class="badge__glow" id="glow"></div>
+    <div class="badge__mask"><img src="assets/logo.jpg" alt="Beyond Passion"></div>
+  </div>
+
+  <div class="cue" id="cue">
+    <span class="cue__label">Scroll</span>
+    <span class="cue__rail"></span>
+  </div>
+
+  <div class="hero" id="hero">
+    <div class="hero__sheet"></div>
+    <div class="hero__dots halftone"></div>
+    <div class="hero__burst" id="burst"></div>
+    <span class="hero__kicker">นโยบายแบบหมวดหมู่</span>
+    <div class="hero__title">
+      <span class="stk hero__l1" data-text="BEYOND">BEYOND</span>
+      <span class="stk hero__l2" data-text="PASSION">PASSION</span>
+    </div>
+    <p class="hero__lede">เลื่อนลงเพื่อดูนโยบายทั้ง 7 ข้อ</p>
+  </div>
+</section>
+
+<!-- ══ 01 · BEYOND Limits ══ -->
+<section class="scene s-paper" id="p1" data-reveal="fill">
+  <div class="tear tear--top"></div>
+  <div class="scene__dots halftone"></div>
+  <div class="scene__body">
+    <h2 class="ptitle">
+      <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
+      <span class="stk ptitle__word" data-text="LIMITS">LIMITS</span>
+    </h2>
+    <p class="pbody" data-body>เน้นพัฒนาสนับสนุนความสามารถวิชาการ ดนตรี กีฬา</p>
+  </div>
+</section>
+
+<!-- ══ 02 · BEYOND Comfort ══ -->
+<section class="scene s-acid" id="p2" data-reveal="tear">
+  <div class="tear tear--top"></div>
+  <div class="scene__dots halftone" style="--dotop:.3"></div>
+  <div class="scene__body">
+    <h2 class="ptitle">
+      <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
+      <span class="stk ptitle__word tearmask" data-text="COMFORT">COMFORT</span>
+    </h2>
+    <p class="pbody" data-body>มีการจัดเตรียมกระดาษห่อผ้าอนามัย สำหรับนักเรียนหญิง</p>
+  </div>
+</section>
+
+<!-- ══ 03 · BEYOND Future ══ -->
+<section class="scene s-ink" id="p3" data-reveal="stagger">
+  <div class="tear tear--top"></div>
+  <div class="scene__dots halftone" style="--dotop:.26"></div>
+  <div class="scene__body">
+    <h2 class="ptitle">
+      <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
+      <span class="stk ptitle__word" data-text="FUTURE">FUTURE</span>
+    </h2>
+    <p class="pbody" data-split>ชี้เป้าประชาสัมพันธ์งาน open house และค่ายต่าง ๆ จากมหาลัย ให้เข้าถึงง่าย</p>
+  </div>
+</section>
+
+<!-- ══ 04 · BEYOND Hear ══ -->
+<section class="scene s-paper" id="p4" data-reveal="slide">
+  <div class="tear tear--top"></div>
+  <div class="scene__dots halftone"></div>
+  <div class="scene__body">
+    <h2 class="ptitle">
+      <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
+      <span class="stk ptitle__word" data-text="HEAR">HEAR</span>
+    </h2>
+    <div class="row-split">
+      <p class="pbody" data-body>QR Code รับรายงานแจ้งปัญหาต่าง ๆ ตามจุดโรงเรียน</p>
+      <div class="qr" id="qr" aria-hidden="true"><span class="qr__cap">placeholder</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 05 · BEYOND Eco ══ -->
+<section class="scene s-acid" id="p5" data-reveal="expand">
+  <div class="tear tear--top"></div>
+  <div class="scene__dots halftone" style="--dotop:.3"></div>
+  <div class="scene__body">
+    <h2 class="ptitle">
+      <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
+      <span class="stk ptitle__word" data-text="ECO">ECO</span>
+    </h2>
+    <p class="pbody" data-body>นำตระแกรงใส่ขวดน้ำ มาวางตามจุดต่าง ๆ เพื่อนำไปคัดแยกรีไซเคิลต่อไป</p>
+  </div>
+</section>
+
+<!-- ══ 06 · BEYOND Talk — the headline policy ══ -->
+<section class="scene s-ink" id="p6" data-reveal="overshoot">
+  <div class="tear tear--top"></div>
+  <div class="scene__dots halftone" style="--dotop:.24"></div>
+  <div class="scene__body">
+    <h2 class="ptitle">
+      <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
+      <span class="stk ptitle__word" data-text="TALK">TALK</span>
+    </h2>
+    <p class="pbody" data-body>การสร้าง Podcast &amp; Space ในรูปแบบการนั่งคุยกันอย่างเป็นกันเองระหว่างรุ่นพี่และรุ่นน้อง เพื่อเจาะลึกและทำความเข้าใจในสายการเรียนต่าง ๆ ไม่มีกั๊ก</p>
+
+    <div class="notes">
+      <article class="note">
+        <span class="tape note__tape"></span>
+        <span class="note__h">Real Experience</span>
+        <p class="note__p">ถ่ายทอดชีวิตจริงของแต่ละสายการเรียน ทั้งวิทย์-คณิต, ศิลป์-คำนวณ, ศิลป์-ภาษา และสายอื่น ๆ ว่าเรียนหนักแค่ไหน เจอวิชาอะไรบ้าง และบรรยากาศเป็นอย่างไร</p>
+      </article>
+      <article class="note">
+        <span class="tape note__tape"></span>
+        <span class="note__h">Q&amp;A Friend-to-Friend</span>
+        <p class="note__p">เปิดโอกาสให้น้อง ๆ ส่งคำถามที่สงสัยหรือกังวลใจมาให้รุ่นพี่ช่วยตอบและแนะนำ เหมือนมีพี่รหัสหรือเพื่อนคู่คิดมาช่วยแนะแนวโดยตรง</p>
+      </article>
+      <article class="note">
+        <span class="tape note__tape"></span>
+        <span class="note__h">Insight &amp; Direction</span>
+        <p class="note__p">แนะนำแนวทางการเตรียมตัวสอบ การค้นหาตัวเอง รวมถึงโอกาสในการต่อยอดเข้ามหาวิทยาลัยและอาชีพในอนาคต</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 07 · BEYOND Wave ══ -->
+<section class="scene s-paper" id="p7" data-reveal="broadcast">
+  <div class="tear tear--top"></div>
+  <div class="scene__dots halftone"></div>
+  <div class="scene__body">
+    <h2 class="ptitle">
+      <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
+      <span class="stk ptitle__word" data-text="WAVE">WAVE</span>
+    </h2>
+    <p class="pbody" data-body>ยกระดับเสียงตามสายโรงเรียน เปลี่ยนกระจายข่าวแบบเดิมให้กลายเป็นรายการสด “Morning Talk” สุดสดใสช่วงเช้าก่อนเข้าเรียน อัดแน่นด้วยสาระและความบันเทิงที่เข้าถึงนักเรียนทุกคน</p>
+    <div class="wave" id="wave" aria-hidden="true"></div>
+  </div>
+  <div class="bcast">
+    <div class="bcast__track" id="bcast">
+      <span class="bcast__w bcast__w--solid">MORNING TALK</span>
+      <span class="bcast__w">ON AIR</span>
+      <span class="bcast__w bcast__w--solid">MORNING TALK</span>
+      <span class="bcast__w">ON AIR</span>
+      <span class="bcast__w bcast__w--solid">MORNING TALK</span>
+      <span class="bcast__w">ON AIR</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ OUTRO ══ -->
+<section class="scene" id="outro">
+  <div class="tear tear--top" style="--bg:var(--ink)"></div>
+  <div class="mark"><img src="assets/logo.jpg" alt=""></div>
+  <span class="outro__note">Beyond Passion</span>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  var root  = document.documentElement;
+  var plate = document.getElementById('plate');
+  var bloom = document.getElementById('bloom');
+  var badge = document.getElementById('badge');
+  var glow  = document.getElementById('glow');
+  var cue   = document.getElementById('cue');
+  var hero  = document.getElementById('hero');
+  var dex   = document.getElementById('dex');
+
+  var INK='#0B0B0C', ACID='#E3FF35';
+
+  var reduced  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+  var scenes = [].slice.call(document.querySelectorAll('.scene[data-reveal]'));
+
+  /* ---------- static furniture: QR, waveform, index ---------- */
+
+  // Deterministic decorative pattern with QR-like finder squares.
+  // Explicitly NOT a scannable code — see the "placeholder" caption.
+  (function buildQR(){
+    var el = document.getElementById('qr'); if(!el) return;
+    var N=11, seed=7;
+    function rnd(){ seed=(seed*1103515245+12345)&0x7fffffff; return seed/0x7fffffff; }
+    function finder(r,c){
+      return (r<3&&c<3)||(r<3&&c>N-4)||(r>N-4&&c<3);
+    }
+    for(var r=0;r<N;r++) for(var c=0;c<N;c++){
+      var i=document.createElement('i'), on;
+      if(finder(r,c)){
+        /* 3x3 corner rings — the bit that makes it read as a QR
+           rather than as random blocks */
+        var lr = r>N-4 ? r-(N-3) : r, lc = c>N-4 ? c-(N-3) : c;
+        on = !(lr===1 && lc===1);
+      } else {
+        on = rnd()>.52;
+      }
+      if(!on) i.style.background='transparent';
+      el.appendChild(i);
+    }
+  })();
+
+  (function buildWave(){
+    var el = document.getElementById('wave'); if(!el) return;
+    for(var i=0;i<28;i++){ el.appendChild(document.createElement('i')); }
+  })();
+
+  (function buildIndex(){
+    scenes.forEach(function(s,i){
+      var a=document.createElement('a');
+      a.href='#'+s.id;
+      a.textContent=('0'+(i+1)).slice(-2);
+      dex.appendChild(a);
+    });
+  })();
+
+  /* ----------------------------------------------------------------
+     Thai can't be split per character: vowels and tone marks are
+     separate code points rendered above/below the base consonant, so
+     per-char inline-blocks shatter the word. Thai also has no spaces,
+     which makes split(' ') useless. Intl.Segmenter gives real word
+     boundaries; each word gets its own mask so the reveal survives
+     line wrapping.
+     ---------------------------------------------------------------- */
+  function segment(text){
+    if (window.Intl && Intl.Segmenter){
+      try{
+        var seg = new Intl.Segmenter('th',{granularity:'word'});
+        var out=[], it=seg.segment(text)[Symbol.iterator]();
+        for(var s=it.next(); !s.done; s=it.next()) out.push(s.value.segment);
+        if(out.length) return out;
+      }catch(e){}
+    }
+    return [text];
+  }
+  function buildSplit(el){
+    var words = segment(el.textContent.trim());
+    el.textContent='';
+    words.forEach(function(w){
+      var m=document.createElement('span'); m.className='umask';
+      var u=document.createElement('span'); u.className='unit'; u.textContent=w;
+      m.appendChild(u); el.appendChild(m);
+    });
+    return el.querySelectorAll('.unit');
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* An opening only reads as an opening from the top; Chrome restores
+     scroll across reloads and would drop a visitor mid-sequence. */
+  if('scrollRestoration' in history) history.scrollRestoration='manual';
+  window.scrollTo(0,0);
+
+  /* ---------------- reduced motion: state, no motion ---------------- */
+  if(reduced){
+    root.classList.remove('is-booting');
+    gsap.set([cue,hero,dex],{opacity:1});
+    gsap.set('.tearmask',{clipPath:'inset(0 0 0% 0)'});
+    gsap.set(badge,{display:'none'});
+    plate.style.backgroundColor='#F2EFE4';
+    dex.style.pointerEvents='auto';
+    markIndex();
+    return;
+  }
+
+  /* ═══════════ OPENING ═══════════
+     Scroll stays locked until this resolves, so the badge always gets
+     its full entrance and the cue never appears early. */
+
+  gsap.set(badge,{opacity:0,scale:1.22,filter:'blur(26px)'});
+  gsap.set(glow ,{opacity:0,scale:.62});
+
+  gsap.timeline({
+      onComplete:function(){
+        root.classList.remove('is-booting');
+        initScroll();
+        ScrollTrigger.refresh();
+      }
+    })
+    .to(badge,{opacity:1,scale:1,filter:'blur(0px)',duration:2.1,ease:'power2.out'})
+    .to(glow ,{opacity:1,scale:1,duration:2.4,ease:'power2.out'},.15)
+    .to(cue  ,{opacity:1,duration:.8,ease:'power2.out'},'-=0.35');
+
+  /* ─────────────────────────────────────────────────────────────
+     EVERY ScrollTrigger is built in here, and only once the opening
+     has resolved. Two reasons, both found the hard way:
+     1. A scrubbed .to() records start values when the timeline is
+        CREATED — built up front, progress-0 kept snapping the badge
+        back to its hidden pre-entrance state.
+     2. During boot the document is scroll-locked; triggers built
+        against a not-yet-final layout compute wrong offsets and fire
+        scenes early.
+     ───────────────────────────────────────────────────────────── */
+  function initScroll(){
+
+    gsap.set(bloom,{xPercent:-50,yPercent:-50});
+    function coverScale(){
+      var d = bloom.offsetWidth || 1;
+      return (Math.sqrt(innerWidth*innerWidth + innerHeight*innerHeight)/d)*1.08;
+    }
+
+    /* ══ opening → campaign world, inside one pinned stage ══
+       The badge pushes past the camera and defocuses while its own
+       disc grows past the corners, so the acid field is revealed by
+       the logo rather than cross-faded to. Once the disc covers the
+       screen the plate is swapped underneath it — invisible, because
+       everything is solid acid at that instant — and the hero collage
+       rises into the space the logo just left. */
+    var stage = gsap.timeline({
+      scrollTrigger:{
+        trigger:'#stage', start:'top top', end:'+=190%',
+        pin:true, scrub:.8, anticipatePin:1, invalidateOnRefresh:true
+      }
+    });
+
+    stage
+      .to(badge,{scale:isMobile?2.6:3.0,filter:'blur(20px)',opacity:0,duration:.5,ease:'power2.in'},0)
+      .fromTo(bloom,{scale:.98,opacity:1},{scale:coverScale,duration:.5,ease:'power2.in'},0)
+      .to(glow,{opacity:0,duration:.42,ease:'power1.in'},0)
+      .to(cue ,{opacity:0,duration:.08,ease:'none'},0)
+      /* the cover's torn frame and halftone clear out ahead of the
+         disc, otherwise they'd sit on top of the expanding acid */
+      .to('.covdeco',{opacity:0,duration:.3,ease:'power2.in'},0)
+      .set(plate,{backgroundColor:ACID},.48)
+      .set(bloom,{opacity:0},.48)
+      .fromTo(hero,{opacity:0,y:54},{opacity:1,y:0,duration:.24,ease:'power3.out'},.5)
+      .fromTo('#burst',{rotate:0,scale:.7},{rotate:60,scale:1,duration:.5,ease:'none'},.5);
+
+    /* index fades in once the opening is done with */
+    ScrollTrigger.create({
+      trigger:'#stage', start:'bottom 80%',
+      onEnter:function(){ gsap.to(dex,{opacity:1,duration:.5}); dex.style.pointerEvents='auto'; },
+      onLeaveBack:function(){ gsap.to(dex,{opacity:0,duration:.3}); dex.style.pointerEvents='none'; }
+    });
+
+    /* ══ policy scenes — a different reveal mechanic each ══ */
+
+    scenes.forEach(function(sec){
+      var kind   = sec.dataset.reveal;
+      var kicker = sec.querySelector('.ptitle__kicker');
+      var word   = sec.querySelector('.ptitle__word');
+      var body   = sec.querySelector('[data-body]');
+
+      var tl = gsap.timeline({ scrollTrigger:{ trigger:sec, start:'top 64%' } });
+
+      if(kicker) tl.from(kicker,{y:22,opacity:0,rotate:-14,duration:.6,ease:'back.out(1.7)'},0);
+
+      /* 01 — outline lands first, then the fill floods in */
+      if(kind==='fill'){
+        tl.from(word,{scale:.88,opacity:0,duration:.55,ease:'back.out(1.6)'},.12)
+          .fromTo(word,{color:'rgba(227,255,53,0)'},{color:ACID,duration:.7,ease:'power2.out'},.42);
+      }
+
+      /* 02 — torn mask drops the word into place */
+      if(kind==='tear'){
+        tl.fromTo(word,{clipPath:'inset(0 0 100% 0)',yPercent:-8},
+                       {clipPath:'inset(0 0 0% 0)',yPercent:0,duration:.95,ease:'power4.out'},.1);
+      }
+
+      /* 03 — word-by-word Thai stagger */
+      if(kind==='stagger'){
+        tl.from(word,{xPercent:-6,opacity:0,duration:.6,ease:'power3.out'},.1);
+        var sp = sec.querySelector('[data-split]');
+        if(sp) tl.from(buildSplit(sp),{yPercent:120,duration:.85,ease:'power4.out',stagger:.04},.3);
+      }
+
+      /* 04 — kicker slides out from behind the word */
+      if(kind==='slide'){
+        tl.from(word,{x:-40,opacity:0,duration:.7,ease:'power3.out'},.05)
+          .from('#qr',{opacity:0,rotate:-22,scale:.8,duration:.7,ease:'back.out(1.5)'},.35);
+      }
+
+      /* 05 — the word stretches open horizontally */
+      if(kind==='expand'){
+        tl.from(word,{scaleX:.42,opacity:0,transformOrigin:'left center',duration:.85,ease:'power4.out'},.1);
+      }
+
+      /* 06 — overshoot, then settle; notes tape themselves on */
+      if(kind==='overshoot'){
+        tl.from(word,{scale:.6,opacity:0,duration:.75,ease:'back.out(2.4)'},.1)
+          .from(sec.querySelectorAll('.note'),
+                {y:40,opacity:0,rotate:-5,duration:.7,ease:'power3.out',stagger:.12},.5);
+      }
+
+      /* 07 — broadcast: word lands, waveform springs, marquee runs */
+      if(kind==='broadcast'){
+        tl.from(word,{y:34,opacity:0,duration:.65,ease:'power3.out'},.1)
+          .from(sec.querySelectorAll('.wave i'),
+                {scaleY:.05,duration:.7,ease:'power3.out',stagger:{each:.02,from:'center'}},.35);
+      }
+
+      if(body && kind!=='stagger'){
+        tl.from(body,{y:20,opacity:0,duration:.7,ease:'power3.out'},.42);
+      }
+    });
+
+    /* waveform keeps a slow idle pulse while 07 is on screen */
+    var waveBars = document.querySelectorAll('#wave i');
+    if(waveBars.length){
+      gsap.to(waveBars,{
+        scaleY:function(){ return .25 + Math.random()*.75; },
+        duration:.62, ease:'sine.inOut', repeat:-1, yoyo:true,
+        stagger:{each:.035,from:'center'},
+        scrollTrigger:{trigger:'#p7',start:'top 70%',end:'bottom top',toggleActions:'play pause resume pause'}
+      });
+    }
+
+    /* vertical scroll drives the broadcast marquee horizontally */
+    gsap.fromTo('#bcast',{xPercent:0},{
+      xPercent:isMobile?-42:-30, ease:'none',
+      scrollTrigger:{trigger:'#p7',start:'top bottom',end:'bottom top',scrub:.6}
+    });
+
+    /* outro mark */
+    gsap.from('#outro .mark',{scale:.82,opacity:0,duration:1,ease:'power3.out',
+      scrollTrigger:{trigger:'#outro',start:'top 72%'}});
+    gsap.from('#outro .outro__note',{opacity:0,y:12,duration:.85,ease:'power3.out',
+      scrollTrigger:{trigger:'#outro',start:'top 72%'}});
+
+    markIndex();
+  }
+
+  /* index active-state */
+  function markIndex(){
+    var links = dex.querySelectorAll('a');
+    scenes.forEach(function(sec,i){
+      ScrollTrigger.create({
+        trigger:sec, start:'top 50%', end:'bottom 50%',
+        onToggle:function(self){ links[i] && links[i].classList.toggle('on', self.isActive); }
+      });
+    });
+  }
+
+  /* Late webfont/image loads change layout under the pinned stage. */
+  window.addEventListener('load',function(){ ScrollTrigger.refresh(); });
+  if(document.fonts && document.fonts.ready){
+    document.fonts.ready.then(function(){ ScrollTrigger.refresh(); });
+  }
+  window.addEventListener('resize',function(){
+    isMobile = window.matchMedia('(max-width: 768px)').matches;
+  });
+})();
+</script>
+</body>
+</html>
