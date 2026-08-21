@@ -306,13 +306,18 @@ img{display:block;max-width:100%}
   position:relative;
   font-size:clamp(.95rem,2vw,1.24rem);
   line-height:1.8; font-weight:400;
-  max-width:46ch;
+  width:fit-content;
+  max-width:min(62ch,100%);
+  height:auto;
   color:var(--ink);
   background:#fff;
   padding:clamp(1rem,2vw,1.5rem) clamp(1.1rem,2.2vw,1.7rem);
   box-shadow:9px 9px 0 rgba(0,0,0,.85);
   rotate:-.9deg;
   align-self:flex-start;
+  text-wrap:pretty;
+  overflow-wrap:break-word;
+  word-break:normal;
 }
 .pbody::before{                      /* tape across the top-left corner */
   content:'';
@@ -337,7 +342,7 @@ img{display:block;max-width:100%}
 
 /* --- reveal mechanics --- */
 .tearmask{ clip-path:inset(0 0 100% 0) }          /* 02 */
-.umask{ display:inline-block; overflow:hidden; vertical-align:bottom; padding:.26em 0 .2em; margin:-.26em 0 -.2em }
+.umask{ display:inline-block; overflow:hidden; vertical-align:bottom; padding:.26em 0 .2em; margin:-.26em 0 -.2em; white-space:pre }
 .unit{ display:inline-block; will-change:transform }
 
 /* --- 04 · QR placeholder (graphic only, never a real code) --- */
@@ -357,6 +362,7 @@ img{display:block;max-width:100%}
   font-weight:600; color:var(--txt); white-space:nowrap; opacity:.65;
 }
 .row-split{ display:flex; gap:clamp(1.5rem,5vw,4rem); align-items:flex-start; flex-wrap:wrap }
+.row-split .pbody{ flex:1 1 34rem }
 
 /* --- 06 · taped notes --- */
 .notes{
@@ -429,9 +435,18 @@ img{display:block;max-width:100%}
   .stk{ --sx:4px; --sy:4px }
   .hero__burst{ width:150px; top:9%; right:-46px }
   .pbody,.hero__lede{ max-width:none }
+  .hero__lede--desktop{ display:none }
   .qr{ rotate:-3deg }
   .dex{ display:none }        /* index is desktop-only; too cramped otherwise */
   .scene{ padding-top:calc(var(--pad) * 2.2); padding-bottom:calc(var(--pad) * 2.6) }
+}
+
+@media (min-width:769px){
+  .hero__lede--mobile{ display:none }
+}
+
+@media (min-width:769px) and (max-height:800px){
+  #p6,#p7{ padding-top:clamp(3rem,7vh,4rem); padding-bottom:clamp(3rem,7vh,4rem) }
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -471,7 +486,7 @@ img{display:block;max-width:100%}
       <span class="stk hero__l1" data-text="BEYOND">BEYOND</span>
       <span class="stk hero__l2" data-text="PASSION">PASSION</span>
     </div>
-    <p class="hero__lede">เลื่อนลงเพื่อดูนโยบายทั้ง 7 ข้อ</p>
+    <p class="hero__lede"><span class="hero__lede--desktop">กด ↑ ↓ เพื่อดูนโยบาย</span><span class="hero__lede--mobile">เลื่อนเพื่อดูนโยบาย</span></p>
   </div>
 </section>
 
@@ -484,7 +499,7 @@ img{display:block;max-width:100%}
       <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
       <span class="stk ptitle__word" data-text="LIMITS">LIMITS</span>
     </h2>
-    <p class="pbody" data-body>เน้นพัฒนาสนับสนุนความสามารถวิชาการ ดนตรี กีฬา</p>
+    <p class="pbody" data-body>ส่งเสริมและสนับสนุนความสามารถของนักเรียนให้ได้แสดงศักยภาพอย่างเต็มที่ ทั้งด้านวิชาการ ดนตรี กีฬา และกิจกรรมที่นักเรียนสนใจ โดยช่วยผลักดันโอกาสในการเข้าร่วมการแข่งขัน การแสดงผลงาน และกิจกรรมพัฒนาทักษะ เพื่อให้นักเรียนทุกคนมีพื้นที่ในการค้นหาความถนัดและต่อยอดความสามารถของตัวเองได้จริง</p>
   </div>
 </section>
 
@@ -497,7 +512,7 @@ img{display:block;max-width:100%}
       <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
       <span class="stk ptitle__word tearmask" data-text="COMFORT">COMFORT</span>
     </h2>
-    <p class="pbody" data-body>มีการจัดเตรียมกระดาษห่อผ้าอนามัย สำหรับนักเรียนหญิง</p>
+    <p class="pbody" data-body>เพิ่มความสะดวกและความเป็นส่วนตัวให้กับนักเรียนหญิง โดยจัดเตรียมกระดาษสำหรับใช้ห่อผ้าอนามัยก่อนทิ้งในจุดที่เหมาะสมภายในโรงเรียน ช่วยให้การใช้งานห้องน้ำสะอาด เป็นระเบียบ และลดความกังวลในสถานการณ์ที่นักเรียนต้องการใช้งานจริงในชีวิตประจำวัน</p>
   </div>
 </section>
 
@@ -510,7 +525,7 @@ img{display:block;max-width:100%}
       <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
       <span class="stk ptitle__word" data-text="FUTURE">FUTURE</span>
     </h2>
-    <p class="pbody" data-split>ชี้เป้าประชาสัมพันธ์งาน open house และค่ายต่าง ๆ จากมหาลัย ให้เข้าถึงง่าย</p>
+    <p class="pbody" data-split>รวบรวมและประชาสัมพันธ์ข่าว Open House ค่ายมหาวิทยาลัย กิจกรรมแนะแนว และโอกาสที่เกี่ยวข้องกับการศึกษาต่อให้นักเรียนเข้าถึงได้ง่ายขึ้น ช่วยลดปัญหาการพลาดข่าวสำคัญ และเปิดโอกาสให้นักเรียนได้สำรวจคณะ มหาวิทยาลัย และเส้นทางที่ตัวเองสนใจก่อนตัดสินใจในอนาคต</p>
   </div>
 </section>
 
@@ -524,7 +539,7 @@ img{display:block;max-width:100%}
       <span class="stk ptitle__word" data-text="HEAR">HEAR</span>
     </h2>
     <div class="row-split">
-      <p class="pbody" data-body>QR Code รับรายงานแจ้งปัญหาต่าง ๆ ตามจุดโรงเรียน</p>
+      <p class="pbody" data-body>เพิ่มช่องทางให้นักเรียนสามารถแจ้งปัญหาที่พบภายในโรงเรียนได้สะดวกขึ้น ผ่าน QR Code ที่ติดตั้งในจุดที่เหมาะสม นักเรียนสามารถส่งรายละเอียดของปัญหาได้โดยไม่ต้องเสียเวลาไปแจ้งหลายขั้นตอน เพื่อช่วยให้ปัญหาต่าง ๆ ถูกส่งต่อไปยังผู้ที่เกี่ยวข้องได้รวดเร็วและเป็นระบบมากขึ้น</p>
       <div class="qr" id="qr" aria-hidden="true"><span class="qr__cap">placeholder</span></div>
     </div>
   </div>
@@ -539,7 +554,7 @@ img{display:block;max-width:100%}
       <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
       <span class="stk ptitle__word" data-text="ECO">ECO</span>
     </h2>
-    <p class="pbody" data-body>นำตระแกรงใส่ขวดน้ำ มาวางตามจุดต่าง ๆ เพื่อนำไปคัดแยกรีไซเคิลต่อไป</p>
+    <p class="pbody" data-body>จัดวางตะแกรงสำหรับรวบรวมขวดน้ำตามจุดต่าง ๆ ภายในโรงเรียน เพื่อให้นักเรียนสามารถแยกขวดออกจากขยะทั่วไปได้สะดวกขึ้น จากนั้นจึงนำขวดที่รวบรวมได้ไปเข้าสู่กระบวนการคัดแยกและรีไซเคิลต่อ ช่วยสร้างนิสัยการแยกขยะที่สามารถทำได้จริงในชีวิตประจำวันของนักเรียน</p>
   </div>
 </section>
 
@@ -552,23 +567,23 @@ img{display:block;max-width:100%}
       <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
       <span class="stk ptitle__word" data-text="TALK">TALK</span>
     </h2>
-    <p class="pbody" data-body>การสร้าง Podcast &amp; Space ในรูปแบบการนั่งคุยกันอย่างเป็นกันเองระหว่างรุ่นพี่และรุ่นน้อง เพื่อเจาะลึกและทำความเข้าใจในสายการเรียนต่าง ๆ ไม่มีกั๊ก</p>
+    <p class="pbody" data-body>สร้าง Podcast &amp; Space ที่เปิดพื้นที่ให้รุ่นพี่และรุ่นน้องได้นั่งพูดคุยกันอย่างเป็นกันเอง เพื่อถ่ายทอดประสบการณ์จริงของแต่ละสายการเรียน เปิดโอกาสให้น้อง ๆ ถามในสิ่งที่สงสัย และช่วยให้การเลือกสายการเรียนหรือวางแผนอนาคตมาจากข้อมูลจริงมากกว่าการเดา</p>
 
     <div class="notes">
       <article class="note">
         <span class="tape note__tape"></span>
         <span class="note__h">Real Experience</span>
-        <p class="note__p">ถ่ายทอดชีวิตจริงของแต่ละสายการเรียน ทั้งวิทย์-คณิต, ศิลป์-คำนวณ, ศิลป์-ภาษา และสายอื่น ๆ ว่าเรียนหนักแค่ไหน เจอวิชาอะไรบ้าง และบรรยากาศเป็นอย่างไร</p>
+        <p class="note__p">ถ่ายทอดชีวิตจริงของแต่ละสายการเรียน ทั้งวิทย์-คณิต ศิลป์-คำนวณ ศิลป์-ภาษา และสายอื่น ๆ ว่าแต่ละสายเรียนอะไร เจอวิชาแบบไหน ระดับความหนักเป็นอย่างไร และบรรยากาศในการเรียนจริงเป็นแบบไหน</p>
       </article>
       <article class="note">
         <span class="tape note__tape"></span>
         <span class="note__h">Q&amp;A Friend-to-Friend</span>
-        <p class="note__p">เปิดโอกาสให้น้อง ๆ ส่งคำถามที่สงสัยหรือกังวลใจมาให้รุ่นพี่ช่วยตอบและแนะนำ เหมือนมีพี่รหัสหรือเพื่อนคู่คิดมาช่วยแนะแนวโดยตรง</p>
+        <p class="note__p">เปิดโอกาสให้น้อง ๆ ส่งคำถาม ความสงสัย หรือเรื่องที่กังวลเข้ามาให้รุ่นพี่ช่วยตอบและแชร์ประสบการณ์แบบตรงไปตรงมา เหมือนมีรุ่นพี่หรือเพื่อนที่เคยผ่านจุดนั้นมาก่อนมาช่วยแนะนำ</p>
       </article>
       <article class="note">
         <span class="tape note__tape"></span>
         <span class="note__h">Insight &amp; Direction</span>
-        <p class="note__p">แนะนำแนวทางการเตรียมตัวสอบ การค้นหาตัวเอง รวมถึงโอกาสในการต่อยอดเข้ามหาวิทยาลัยและอาชีพในอนาคต</p>
+        <p class="note__p">แชร์แนวทางการเตรียมตัวสอบ การเลือกสายการเรียน การค้นหาความสนใจของตัวเอง รวมถึงข้อมูลที่ช่วยมองเห็นเส้นทางต่อยอดไปสู่มหาวิทยาลัยและอาชีพในอนาคตได้ชัดเจนขึ้น</p>
       </article>
     </div>
   </div>
@@ -583,7 +598,7 @@ img{display:block;max-width:100%}
       <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
       <span class="stk ptitle__word" data-text="WAVE">WAVE</span>
     </h2>
-    <p class="pbody" data-body>ยกระดับเสียงตามสายโรงเรียน เปลี่ยนกระจายข่าวแบบเดิมให้กลายเป็นรายการสด “Morning Talk” สุดสดใสช่วงเช้าก่อนเข้าเรียน อัดแน่นด้วยสาระและความบันเทิงที่เข้าถึงนักเรียนทุกคน</p>
+    <p class="pbody" data-body>ยกระดับเสียงตามสายของโรงเรียนจากการประกาศข่าวแบบเดิม ให้กลายเป็นรายการช่วงเช้า “Morning Talk” ที่ฟังง่าย สดใส และเข้าถึงนักเรียนมากขึ้น ภายในรายการสามารถรวมทั้งข่าวสารที่ควรรู้ กิจกรรมในโรงเรียน เรื่องน่าสนใจ และความบันเทิงเล็ก ๆ เพื่อให้ช่วงเวลาก่อนเข้าเรียนมีบรรยากาศที่สนุกและมีชีวิตชีวามากกว่าเดิม</p>
     <div class="wave" id="wave" aria-hidden="true"></div>
   </div>
   <div class="bcast">
@@ -624,6 +639,7 @@ img{display:block;max-width:100%}
 
   var reduced  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var isMobile = window.matchMedia('(max-width: 768px)').matches;
+  var slideNavReady = false;
 
   var scenes = [].slice.call(document.querySelectorAll('.scene[data-reveal]'));
 
@@ -713,6 +729,7 @@ img{display:block;max-width:100%}
     plate.style.backgroundColor='#F2EFE4';
     dex.style.pointerEvents='auto';
     markIndex();
+    initSlideNavigation(null);
     return;
   }
 
@@ -871,6 +888,7 @@ img{display:block;max-width:100%}
       scrollTrigger:{trigger:'#outro',start:'top 72%'}});
 
     markIndex();
+    initSlideNavigation(stage.scrollTrigger);
   }
 
   /* index active-state */
@@ -882,6 +900,91 @@ img{display:block;max-width:100%}
         onToggle:function(self){ links[i] && links[i].classList.toggle('on', self.isActive); }
       });
     });
+  }
+
+  /* Desktop keyboard navigation wraps the existing scroll architecture.
+     The pinned stage keeps two intentional stops: the cover at scroll 0,
+     then the fully revealed hero at the live ScrollTrigger end position. */
+  function initSlideNavigation(stageTrigger){
+    if(slideNavReady) return;
+    slideNavReady=true;
+
+    var busy=false;
+
+    function isEditing(target){
+      if(!target || target.nodeType!==1) return false;
+      return target.isContentEditable || !!target.closest('input,textarea,select,[contenteditable]:not([contenteditable="false"])');
+    }
+
+    function elementTop(el){
+      return Math.round(window.scrollY + el.getBoundingClientRect().top);
+    }
+
+    function navigationTargets(){
+      var maxScroll=Math.max(0,document.documentElement.scrollHeight-window.innerHeight);
+      var targets=[0];
+
+      if(stageTrigger && typeof stageTrigger.end==='number'){
+        targets.push(Math.round(stageTrigger.end));
+      }
+
+      scenes.forEach(function(sec){ targets.push(elementTop(sec)); });
+      var outro=document.getElementById('outro');
+      if(outro) targets.push(elementTop(outro));
+
+      return targets
+        .map(function(top){ return Math.max(0,Math.min(top,maxScroll)); })
+        .filter(function(top,index,list){ return index===0 || Math.abs(top-list[index-1])>2; });
+    }
+
+    function unlockWhenSettled(targetTop){
+      if(reduced){ busy=false; return; }
+
+      var started=performance.now();
+      var stableFrames=0;
+
+      function check(){
+        if(Math.abs(window.scrollY-targetTop)<=2){
+          stableFrames++;
+          if(stableFrames>=3){ busy=false; return; }
+        }else{
+          stableFrames=0;
+        }
+
+        if(performance.now()-started>=1800){ busy=false; return; }
+        requestAnimationFrame(check);
+      }
+
+      requestAnimationFrame(check);
+    }
+
+    window.addEventListener('keydown',function(event){
+      if(isMobile || (event.key!=='ArrowDown' && event.key!=='ArrowUp') || isEditing(event.target)) return;
+
+      event.preventDefault();
+      if(event.repeat || busy) return;
+
+      var targets=navigationTargets();
+      var current=window.scrollY;
+      var tolerance=Math.max(8,window.innerHeight*.015);
+      var targetTop=null;
+
+      if(event.key==='ArrowDown'){
+        for(var i=0;i<targets.length;i++){
+          if(targets[i]>current+tolerance){ targetTop=targets[i]; break; }
+        }
+      }else{
+        for(var j=targets.length-1;j>=0;j--){
+          if(targets[j]<current-tolerance){ targetTop=targets[j]; break; }
+        }
+      }
+
+      if(targetTop===null) return;
+
+      busy=true;
+      window.scrollTo({top:targetTop,behavior:reduced?'auto':'smooth'});
+      unlockWhenSettled(targetTop);
+    },{passive:false});
   }
 
   /* Late webfont/image loads change layout under the pinned stage. */
