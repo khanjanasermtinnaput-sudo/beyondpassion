@@ -283,6 +283,19 @@ img{display:block;max-width:100%}
 }
 .scene__body{ position:relative; z-index:3; max-width:min(100%,1100px) }
 
+.policy-category{
+  display:inline-block;
+  max-width:100%;
+  margin-bottom:clamp(.7rem,1.8vh,1rem);
+  padding:.38em .72em;
+  font-size:clamp(.72rem,1.35vw,.92rem);
+  line-height:1.45; font-weight:600;
+  color:#fff; background:var(--blue);
+  box-shadow:4px 4px 0 rgba(0,0,0,.85);
+  rotate:-1.2deg;
+  text-wrap:balance;
+}
+
 .ptitle{ display:flex; flex-direction:column; align-items:flex-start; margin-bottom:clamp(1.1rem,3.5vh,2.2rem) }
 .ptitle__kicker{
   font-size:clamp(1rem,3vw,2.3rem);
@@ -339,6 +352,7 @@ img{display:block;max-width:100%}
 .s-ink .ptitle__kicker{ color:var(--cyan); --outline:#000; --shadow:#000 }
 .s-acid .ptitle__word{ color:#fff; --outline:var(--ink); --shadow:var(--ink) }
 .s-acid .ptitle__kicker{ color:var(--blue) }
+.s-ink .policy-category{ color:var(--ink); background:var(--acid) }
 
 /* --- reveal mechanics --- */
 .tearmask{ clip-path:inset(0 0 100% 0) }          /* 02 */
@@ -490,29 +504,31 @@ img{display:block;max-width:100%}
   </div>
 </section>
 
-<!-- ══ 01 · BEYOND Limits ══ -->
+<!-- ══ 01 · BEYOND Limit ══ -->
 <section class="scene s-paper" id="p1" data-reveal="fill">
   <div class="tear tear--top"></div>
   <div class="scene__dots halftone"></div>
   <div class="scene__body">
+    <span class="policy-category">ด้านวิชาการและการพัฒนาตนเอง</span>
     <h2 class="ptitle">
       <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
-      <span class="stk ptitle__word" data-text="LIMITS">LIMITS</span>
+      <span class="stk ptitle__word" data-text="LIMIT">LIMIT</span>
     </h2>
-    <p class="pbody" data-body>ส่งเสริมและสนับสนุนความสามารถของนักเรียนให้ได้แสดงศักยภาพอย่างเต็มที่ ทั้งด้านวิชาการ ดนตรี กีฬา และกิจกรรมที่นักเรียนสนใจ โดยช่วยผลักดันโอกาสในการเข้าร่วมการแข่งขัน การแสดงผลงาน และกิจกรรมพัฒนาทักษะ เพื่อให้นักเรียนทุกคนมีพื้นที่ในการค้นหาความถนัดและต่อยอดความสามารถของตัวเองได้จริง</p>
+    <p class="pbody" data-body>สนับสนุนกิจกรรมต่าง ๆ ทางด้านวิชาการ ศิลปะ ดนตรี มีการจัดกิจกรรมดนตรีโฟล์คซอง เต้นแอโรบิก แรนด้อมแดนซ์ ฯลฯ ภายในคาบชุมนุมสลับสัปดาห์ และมีนิทรรศการเด็กศิลป์ ที่ห้องฐานร่มโพธิ์ art gallery รวบรวมผลงานของเด็กริ้วเหลืองดำ พร้อมดนตรีสดชิล และ mini booth ที่ทุกคนสามารถนำงาน handmade มาจำหน่ายแลกเปลี่ยนกัน</p>
   </div>
 </section>
 
-<!-- ══ 02 · BEYOND Comfort ══ -->
-<section class="scene s-acid" id="p2" data-reveal="tear">
+<!-- ══ 02 · BEYOND Tutor ══ -->
+<section class="scene s-acid" id="p8" data-reveal="fill">
   <div class="tear tear--top"></div>
   <div class="scene__dots halftone" style="--dotop:.3"></div>
   <div class="scene__body">
+    <span class="policy-category">ด้านวิชาการและการพัฒนาตนเอง</span>
     <h2 class="ptitle">
       <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
-      <span class="stk ptitle__word tearmask" data-text="COMFORT">COMFORT</span>
+      <span class="stk ptitle__word" data-text="TUTOR">TUTOR</span>
     </h2>
-    <p class="pbody" data-body>เพิ่มความสะดวกและความเป็นส่วนตัวให้กับนักเรียนหญิง โดยจัดเตรียมกระดาษสำหรับใช้ห่อผ้าอนามัยก่อนทิ้งในจุดที่เหมาะสมภายในโรงเรียน ช่วยให้การใช้งานห้องน้ำสะอาด เป็นระเบียบ และลดความกังวลในสถานการณ์ที่นักเรียนต้องการใช้งานจริงในชีวิตประจำวัน</p>
+    <p class="pbody" data-body>พี่เสือและผองเพื่อนติวเตอร์ ทำคลิป VDO ตะลุยแก้โจทย์สรุปเนื้อหาต่าง ๆ พร้อมชีทสรุป และมี Exam Q&amp;A community เปิดช่องทางให้น้อง ๆ ส่งโจทย์ที่สงสัยเข้ามา แล้วพี่เสือกับผองเพื่อนจะทำคลิปอธิบายอย่างละเอียด เข้าใจง่าย</p>
   </div>
 </section>
 
@@ -521,71 +537,54 @@ img{display:block;max-width:100%}
   <div class="tear tear--top"></div>
   <div class="scene__dots halftone" style="--dotop:.26"></div>
   <div class="scene__body">
+    <span class="policy-category">ด้านวิชาการและการพัฒนาตนเอง</span>
     <h2 class="ptitle">
       <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
       <span class="stk ptitle__word" data-text="FUTURE">FUTURE</span>
     </h2>
-    <p class="pbody" data-split>รวบรวมและประชาสัมพันธ์ข่าว Open House ค่ายมหาวิทยาลัย กิจกรรมแนะแนว และโอกาสที่เกี่ยวข้องกับการศึกษาต่อให้นักเรียนเข้าถึงได้ง่ายขึ้น ช่วยลดปัญหาการพลาดข่าวสำคัญ และเปิดโอกาสให้นักเรียนได้สำรวจคณะ มหาวิทยาลัย และเส้นทางที่ตัวเองสนใจก่อนตัดสินใจในอนาคต</p>
+    <p class="pbody" data-split>ประชาสัมพันธ์ค่ายกิจกรรมต่าง ๆ เช่น เปิดบ้านวิชาการ การแข่งขันการประกวด การฝึกงาน และกิจกรรมค่ายที่เกี่ยวในมหาลัยฟรี ให้เข้าถึงง่าย พร้อมเตรียมตัวสู่อนาคตในรั้วมหาลัย</p>
   </div>
 </section>
 
-<!-- ══ 04 · BEYOND Hear ══ -->
-<section class="scene s-paper" id="p4" data-reveal="slide">
+<!-- ══ 04 · BEYOND Comfort ══ -->
+<section class="scene s-acid" id="p2" data-reveal="tear">
+  <div class="tear tear--top"></div>
+  <div class="scene__dots halftone" style="--dotop:.3"></div>
+  <div class="scene__body">
+    <span class="policy-category">ด้านสวัสดิการและสิ่งแวดล้อมในโรงเรียน</span>
+    <h2 class="ptitle">
+      <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
+      <span class="stk ptitle__word tearmask" data-text="COMFORT">COMFORT</span>
+    </h2>
+    <p class="pbody" data-body>สานต่อนโยบายของพรรครุ่นพี่ โดยการจัดเตรียมกระดาษทิชชูผ้าอนามัยที่มีขนาดใหญ่ขึ้น สำหรับนักเรียนหญิง</p>
+  </div>
+</section>
+
+<!-- ══ 05 · BEYOND SHADE ══ -->
+<section class="scene s-paper" id="p9" data-reveal="tear">
   <div class="tear tear--top"></div>
   <div class="scene__dots halftone"></div>
   <div class="scene__body">
+    <span class="policy-category">ด้านสวัสดิการและสิ่งแวดล้อมในโรงเรียน</span>
     <h2 class="ptitle">
       <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
-      <span class="stk ptitle__word" data-text="HEAR">HEAR</span>
+      <span class="stk ptitle__word tearmask" data-text="SHADE">SHADE</span>
     </h2>
-    <div class="row-split">
-      <p class="pbody" data-body>เพิ่มช่องทางให้นักเรียนสามารถแจ้งปัญหาที่พบภายในโรงเรียนได้สะดวกขึ้น ผ่าน QR Code ที่ติดตั้งในจุดที่เหมาะสม นักเรียนสามารถส่งรายละเอียดของปัญหาได้โดยไม่ต้องเสียเวลาไปแจ้งหลายขั้นตอน เพื่อช่วยให้ปัญหาต่าง ๆ ถูกส่งต่อไปยังผู้ที่เกี่ยวข้องได้รวดเร็วและเป็นระบบมากขึ้น</p>
-      <div class="qr" id="qr" aria-hidden="true"><span class="qr__cap">placeholder</span></div>
-    </div>
+    <p class="pbody" data-body>แดดออกมีร่มบัง ฝนตั้งท่ามีร่มกาง จุดบริการยืมร่มสวัสดิการในโรงเรียน หยิบง่าย ยืมสะดวก สบายใจทุกสภาพอากาศ</p>
   </div>
 </section>
 
-<!-- ══ 05 · BEYOND Eco ══ -->
+<!-- ══ 06 · BEYOND Eco ══ -->
 <section class="scene s-acid" id="p5" data-reveal="expand">
   <div class="tear tear--top"></div>
   <div class="scene__dots halftone" style="--dotop:.3"></div>
   <div class="scene__body">
+    <span class="policy-category">ด้านสวัสดิการและสิ่งแวดล้อมในโรงเรียน</span>
     <h2 class="ptitle">
       <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
       <span class="stk ptitle__word" data-text="ECO">ECO</span>
     </h2>
-    <p class="pbody" data-body>จัดวางตะแกรงสำหรับรวบรวมขวดน้ำตามจุดต่าง ๆ ภายในโรงเรียน เพื่อให้นักเรียนสามารถแยกขวดออกจากขยะทั่วไปได้สะดวกขึ้น จากนั้นจึงนำขวดที่รวบรวมได้ไปเข้าสู่กระบวนการคัดแยกและรีไซเคิลต่อ ช่วยสร้างนิสัยการแยกขยะที่สามารถทำได้จริงในชีวิตประจำวันของนักเรียน</p>
-  </div>
-</section>
-
-<!-- ══ 06 · BEYOND Talk — the headline policy ══ -->
-<section class="scene s-ink" id="p6" data-reveal="overshoot">
-  <div class="tear tear--top"></div>
-  <div class="scene__dots halftone" style="--dotop:.24"></div>
-  <div class="scene__body">
-    <h2 class="ptitle">
-      <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
-      <span class="stk ptitle__word" data-text="TALK">TALK</span>
-    </h2>
-    <p class="pbody" data-body>สร้าง Podcast &amp; Space ที่เปิดพื้นที่ให้รุ่นพี่และรุ่นน้องได้นั่งพูดคุยกันอย่างเป็นกันเอง เพื่อถ่ายทอดประสบการณ์จริงของแต่ละสายการเรียน เปิดโอกาสให้น้อง ๆ ถามในสิ่งที่สงสัย และช่วยให้การเลือกสายการเรียนหรือวางแผนอนาคตมาจากข้อมูลจริงมากกว่าการเดา</p>
-
-    <div class="notes">
-      <article class="note">
-        <span class="tape note__tape"></span>
-        <span class="note__h">Real Experience</span>
-        <p class="note__p">ถ่ายทอดชีวิตจริงของแต่ละสายการเรียน ทั้งวิทย์-คณิต ศิลป์-คำนวณ ศิลป์-ภาษา และสายอื่น ๆ ว่าแต่ละสายเรียนอะไร เจอวิชาแบบไหน ระดับความหนักเป็นอย่างไร และบรรยากาศในการเรียนจริงเป็นแบบไหน</p>
-      </article>
-      <article class="note">
-        <span class="tape note__tape"></span>
-        <span class="note__h">Q&amp;A Friend-to-Friend</span>
-        <p class="note__p">เปิดโอกาสให้น้อง ๆ ส่งคำถาม ความสงสัย หรือเรื่องที่กังวลเข้ามาให้รุ่นพี่ช่วยตอบและแชร์ประสบการณ์แบบตรงไปตรงมา เหมือนมีรุ่นพี่หรือเพื่อนที่เคยผ่านจุดนั้นมาก่อนมาช่วยแนะนำ</p>
-      </article>
-      <article class="note">
-        <span class="tape note__tape"></span>
-        <span class="note__h">Insight &amp; Direction</span>
-        <p class="note__p">แชร์แนวทางการเตรียมตัวสอบ การเลือกสายการเรียน การค้นหาความสนใจของตัวเอง รวมถึงข้อมูลที่ช่วยมองเห็นเส้นทางต่อยอดไปสู่มหาวิทยาลัยและอาชีพในอนาคตได้ชัดเจนขึ้น</p>
-      </article>
-    </div>
+    <p class="pbody" data-body>ตะแกรงคัดแยกขวดน้ำรอบโรงเรียน ปรับเปลี่ยนพฤติกรรมแยกขยะให้เป็นเรื่องง่าย สร้างโรงเรียนสะอาด รักษ์โลกได้จริง เริ่มต้นได้ที่มือเรา</p>
   </div>
 </section>
 
@@ -594,11 +593,12 @@ img{display:block;max-width:100%}
   <div class="tear tear--top"></div>
   <div class="scene__dots halftone"></div>
   <div class="scene__body">
+    <span class="policy-category">ด้านกิจกรรมและนันทนาการ</span>
     <h2 class="ptitle">
       <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
       <span class="stk ptitle__word" data-text="WAVE">WAVE</span>
     </h2>
-    <p class="pbody" data-body>ยกระดับเสียงตามสายของโรงเรียนจากการประกาศข่าวแบบเดิม ให้กลายเป็นรายการช่วงเช้า “Morning Talk” ที่ฟังง่าย สดใส และเข้าถึงนักเรียนมากขึ้น ภายในรายการสามารถรวมทั้งข่าวสารที่ควรรู้ กิจกรรมในโรงเรียน เรื่องน่าสนใจ และความบันเทิงเล็ก ๆ เพื่อให้ช่วงเวลาก่อนเข้าเรียนมีบรรยากาศที่สนุกและมีชีวิตชีวามากกว่าเดิม</p>
+    <p class="pbody" data-body>เสียงตามสายร่วมกับประชาสัมพันธ์ พร้อมเปิดเพลงฮิตติดเทรนด์ เปลี่ยนการกระจายข่าวแบบเดิมให้กลายเป็นรายการสด Morning Talk ช่วงเช้าก่อนเข้าเรียน เต็มไปด้วยสาระบันเทิงที่เข้าถึงนักเรียนทุกคน แถมสามารถฝากเพลงถึงใครบางคนได้</p>
     <div class="wave" id="wave" aria-hidden="true"></div>
   </div>
   <div class="bcast">
@@ -611,6 +611,64 @@ img{display:block;max-width:100%}
       <span class="bcast__w">ON AIR</span>
     </div>
   </div>
+</section>
+
+<!-- ══ 08 · BEYOND Beat ══ -->
+<section class="scene s-acid" id="p10" data-reveal="expand">
+  <div class="tear tear--top"></div>
+  <div class="scene__dots halftone" style="--dotop:.3"></div>
+  <div class="scene__body">
+    <span class="policy-category">ด้านกิจกรรมและนันทนาการ</span>
+    <h2 class="ptitle">
+      <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
+      <span class="stk ptitle__word" data-text="BEAT">BEAT</span>
+    </h2>
+    <p class="pbody" data-body>พื้นที่ปล่อยของของคนมีจังหวะในหัวใจ เวทีแข่งขัน Cover Dance, Cover Music และการแข่งขัน MV สุดสร้างสรรค์ พร้อมชิงรางวัลพร้อมเกียรติบัตร</p>
+  </div>
+</section>
+
+<!-- ══ 09 · BEYOND Talk ══ -->
+<section class="scene s-ink" id="p6" data-reveal="overshoot">
+  <div class="tear tear--top"></div>
+  <div class="scene__dots halftone" style="--dotop:.24"></div>
+  <div class="scene__body">
+    <span class="policy-category">ด้านการรับฟัง</span>
+    <h2 class="ptitle">
+      <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
+      <span class="stk ptitle__word" data-text="TALK">TALK</span>
+    </h2>
+    <p class="pbody" data-body>มีพ็อดแคสต์การคุยกันระหว่างพี่และน้องที่เป็นกันเอง พร้อมให้คำปรึกษา แลกเปลี่ยนความคิดเห็น เจาะลึกทำความเข้าใจในสายการเรียนต่าง ๆ แบบไม่มีกั๊ก</p>
+  </div>
+</section>
+
+<!-- ══ 10 · BEYOND Diversity ══ -->
+<section class="scene s-acid" id="p11" data-reveal="fill">
+  <div class="tear tear--top"></div>
+  <div class="scene__dots halftone" style="--dotop:.3"></div>
+  <div class="scene__body">
+    <span class="policy-category">ด้านการรับฟัง</span>
+    <h2 class="ptitle">
+      <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
+      <span class="stk ptitle__word" data-text="DIVERSITY">DIVERSITY</span>
+    </h2>
+    <p class="pbody" data-body>พื้นที่แห่งความเท่าเทียมและหลากหลาย ขับเคลื่อนโรงเรียนให้เป็น Safe Zone สำหรับทุกคน ร่วมเฉลิมฉลองเดือน Pride Month ผ่านกิจกรรมสร้างสรรค์ และเปิดเวทีหน่วยแฟชั่นโชว์สุดปัง ให้ทุกคนได้แสดงออกเป็นตัวเองอย่างมั่นใจและเจิดจรัส</p>
+  </div>
+</section>
+
+<!-- ══ 11 · BEYOND Hear ══ -->
+<section class="scene s-paper" id="p4" data-reveal="slide">
+  <div class="tear tear--top"></div>
+  <div class="scene__dots halftone"></div>
+  <div class="scene__body">
+    <span class="policy-category">ด้านการรับฟัง</span>
+    <h2 class="ptitle">
+      <span class="stk ptitle__kicker" data-text="BEYOND">BEYOND</span>
+      <span class="stk ptitle__word" data-text="HEAR">HEAR</span>
+    </h2>
+    <div class="row-split">
+      <p class="pbody" data-body>เสียงของทุกคนมีค่าเสมอ จุดรับฟังทุกปัญหา ข้อเสนอแนะ และ Feedback เพื่อนำไปพัฒนาโรงเรียนให้ดียิ่งขึ้น เข้าถึงสะดวกทั้งระบบออนไลน์ ออนไซต์ และกล่องความคิดเห็นลับแบบไม่ระบุตัวตน เพื่อความสบายใจและเป็นกันเองที่สุด</p>
+      <div class="qr" id="qr" aria-hidden="true"><span class="qr__cap">placeholder</span></div>
+    </div>
 </section>
 
 <!-- ══ OUTRO ══ -->
@@ -847,9 +905,11 @@ img{display:block;max-width:100%}
 
       /* 06 — overshoot, then settle; notes tape themselves on */
       if(kind==='overshoot'){
-        tl.from(word,{scale:.6,opacity:0,duration:.75,ease:'back.out(2.4)'},.1)
-          .from(sec.querySelectorAll('.note'),
-                {y:40,opacity:0,rotate:-5,duration:.7,ease:'power3.out',stagger:.12},.5);
+        tl.from(word,{scale:.6,opacity:0,duration:.75,ease:'back.out(2.4)'},.1);
+        var notes=sec.querySelectorAll('.note');
+        if(notes.length){
+          tl.from(notes,{y:40,opacity:0,rotate:-5,duration:.7,ease:'power3.out',stagger:.12},.5);
+        }
       }
 
       /* 07 — broadcast: word lands, waveform springs, marquee runs */
